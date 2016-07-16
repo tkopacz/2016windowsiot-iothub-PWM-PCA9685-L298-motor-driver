@@ -6,7 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Windows.Devices;
+using Windows.Devices.Gpio;
+using Windows.Devices.I2c;
 using Windows.Devices.Pwm;
+using Windows.Devices.Spi;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -41,6 +45,12 @@ namespace DemoPCA9685
         {
             try
             {
+
+                if (LightningProvider.IsLightningEnabled) {
+                    LowLevelDevicesController.DefaultProvider = LightningProvider.GetAggregateProvider();
+                }
+
+
                 //PCA9685
                 m_pwmController = (await PwmController.GetControllersAsync(LightningPwmProvider.GetPwmProvider()))[0];
                 //24 - 1000
@@ -62,6 +72,22 @@ namespace DemoPCA9685
                 m_motor0.Start();
                 m_motor1.SetActiveDutyCyclePercentage(0.5);
                 m_motor1.Start();
+                m_motor0.SetActiveDutyCyclePercentage(0.9);
+                m_motor1.SetActiveDutyCyclePercentage(0.9);
+
+                var gpioController = await GpioController.GetDefaultAsync();
+                var i2cController = await I2cController.GetDefaultAsync();
+                var spiController = await SpiController.GetDefaultAsync();
+
+                m_pin0 = gpioController.OpenPin(19);
+                m_pin1 = gpioController.OpenPin(26);
+                m_pin0.SetDriveMode(GpioPinDriveMode.Output);
+                m_pin1.SetDriveMode(GpioPinDriveMode.Output);
+
+                m_pin0.Write(GpioPinValue.High);
+                m_pin0.Write(GpioPinValue.Low);
+                m_pin1.Write(GpioPinValue.High);
+                m_pin0.Write(GpioPinValue.Low);
 
                 m_timer = new DispatcherTimer();
                 m_timer.Tick += M_timer_Tick;
@@ -77,6 +103,9 @@ namespace DemoPCA9685
         }
 
         bool m_switch = false;
+        private GpioPin m_pin0;
+        private GpioPin m_pin1;
+
         private void M_timer_Tick(object sender, object e)
         {
             if (m_switch)
