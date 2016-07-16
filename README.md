@@ -1,4 +1,6 @@
 # 2016windowsiot-iothub-PWM-PCA9685-L298-motor-driver
+WORK IN PROGRESS, as for 2016-07-16
+
 2016windowsiot-iothub-PWM-PCA9685-L298-motor-driver
 
 ## Components
@@ -14,7 +16,7 @@
 Connect PCA9685 to I2C
 
 ### P Socket
-* P1 - +3.3V (not used)
+* P1 - +3.3V (not used ?)
 * P2 - +5V (connect to +5 on RPI)
 * P3, 
 
