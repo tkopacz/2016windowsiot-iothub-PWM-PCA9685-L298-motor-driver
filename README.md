@@ -14,9 +14,13 @@
 Connect PCA9685 to I2C
 
 ### P Socket
-* P1 - +3.3V (not used)
+* P1 - +3.3V (should be not used, but connect to +3.3)
 * P2 - +5V (connect to +5 on RPI)
-* P3, 
+* P3, P4, P5 (not used)
+* P6 - GPIO (direction)
+* P7 - PWM 7 from PCA9685
+* P8 - PWM 8 from PCA9685
+* P9 - GPIO (direction) 
 
 
 ### PWM from PCA9685
@@ -27,9 +31,9 @@ Connect PCA9685 to I2C
 5 -> P7
 
 ### GPIO
--> P9 (direction)
+-> P9 (direction) (not working????)
 
--> P6 (direction)
+-> P6 (direction) (not working????)
 
 ### 5V
 On P socket pin 2 (marked as 5V). 3.3V - not needed
